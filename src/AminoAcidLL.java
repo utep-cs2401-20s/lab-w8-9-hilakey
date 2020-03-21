@@ -11,6 +11,10 @@ class AminoAcidLL{
   static AminoAcidLL head;
   static AminoAcidLL tempHead;
   static AminoAcidLL iterator;
+  static int size;
+  static int[] aaCounts;
+  static char[] aaList;
+  int j = 0;
 
   AminoAcidLL(){
 
@@ -32,6 +36,7 @@ class AminoAcidLL{
    *counter increases in the counts array.
    */
   private int[] findCodon(String inCodon){
+
     if(inCodon.equals('*') || inCodon.equals('\0')){
       /* if inCodon is either STOP or NULL, return an empty array*/
       return new int[]{};
@@ -64,6 +69,20 @@ class AminoAcidLL{
       current = current.next;
     }
   }
+
+  /*Helper method that prints the totalCodoncounts array*/
+  public static void printAminoAcidCounts(int[] counts){
+      System.out.println(Arrays.toString(aaCounts));
+      System.out.println(Arrays.toString(aaList));
+  }
+
+  /*Helper method that returns the char of amino acid*/
+  public char getAminoAcidList(AminoAcidLL a){
+    return a.aminoAcid;
+  }
+
+
+
 
   /********************************************************************************************/
   /* Recursive method that increments the count for a specific codon:
@@ -98,8 +117,15 @@ class AminoAcidLL{
   /********************************************************************************************/
   /* Shortcut to find the total number of instances of this amino acid */
   private int totalCount(){
-    //sum up total in counts[] for specific node
-    return 0;
+    /*TODO: this will return the number of times this amino acid is used in the sequence (the sum of all of the codon counts).*/
+    //sum up total in counts[] for specific node ,,,,is called by aminoAcidCounts()
+    System.out.println("The current amino acid being counted is.." + tempHead.aminoAcid);
+    int sum = 0;
+
+    for(int i = 0; i < counts.length; i++){
+        sum += counts[i];
+    }
+    return sum;
   }
 
 //  *//********************************************************************************************//*
@@ -134,20 +160,46 @@ class AminoAcidLL{
 //  public int codonCompare(AminoAcidLL inList){
 //    return 0;
 //  }
-//
-//
-//  *//********************************************************************************************//*
-//  *//* Recursively returns the total list of amino acids in the order that they are in in the linked list. *//*
-//  public char[] aminoAcidList(){
-//    return new char[]{};
-//  }
-//
-//  *//********************************************************************************************//*
-//  *//* Recursively returns the total counts of amino acids in the order that they are in in the linked list. *//*
-//  public int[] aminoAcidCounts(){
-//    //TODO:total counts of lists( MAY OR MAY NOT BE UNSORTED)
-//    return new int[]{};
-//  }
+
+
+  /********************************************************************************************//*
+  /* Recursively returns the total list of amino acids in the order that they are in in the linked list. */
+  public char[] aminoAcidList(){
+    //Base Cases
+    if(tempHead == null){
+      j = 0;
+      tempHead = head;
+      return null;
+    }
+    else{
+      aaList[j] = getAminoAcidList(tempHead);
+      j++;
+      tempHead = tempHead.next;
+      aminoAcidList();
+
+    }
+    return new char[]{};
+  }
+
+  /********************************************************************************************//*
+  /* Recursively returns the total counts of amino acids in the order that they are in in the linked list. */
+  public int[] aminoAcidCounts(){
+    //Base Cases
+    if(tempHead == null){
+      j = 0;
+      tempHead = head; ///resets tempHead to head.
+      return null; // If the current node is NUll return the total counts as 0.
+    }
+    else{
+      if(tempHead != null){
+         aaCounts[j] = totalCount();
+      }
+      j++;
+      tempHead = tempHead.next;
+      aminoAcidCounts();
+    }
+   return new int[]{};
+  }
 
 
   /********************************************************************************************//*
@@ -198,25 +250,34 @@ class AminoAcidLL{
       if(head == null){
         System.out.println("This is the head.");
         head = new AminoAcidLL(newCodon);
+        size++;
         iterator = head;
         System.out.println("Head contains: " + iterator.aminoAcid);
       }else{ //if head is not NULL, then we are creating the next node and attaching it to the list.
         iterator.next = new AminoAcidLL(newCodon);
+        size++;
         iterator = iterator.next;// iterator now becomes the latest node
       }
 
     }
     tempHead = head;
     printAAList(head);
+    System.out.println("The size of the list is " + size);
+    aaCounts = new int[size]; //creating a new int array of the same size of the list that will hold the total counts for the amino acids.
+    aaList = new char[size];
+    tempHead.aminoAcidList();
+    tempHead.aminoAcidCounts();
+    printAminoAcidCounts(aaCounts);
     return head; // when the list is complete, return the starting node of the list.
 
   }
 
 
 
-//  *//********************************************************************************************//*
-//  *//* sorts a list by amino acid character*//*
-//  public static AminoAcidLL sort(AminoAcidLL inList){
-//    return null;
-//  }*/
+  /********************************************************************************************//*
+  /* sorts a list by amino acid character*/
+  public static AminoAcidLL sort(AminoAcidLL inList) {
+    //TODO:  returns the new starting node(head).
+
+  }
 }
