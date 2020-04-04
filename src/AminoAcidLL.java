@@ -300,14 +300,21 @@ class AminoAcidLL {
     while (inSequence.length() > 0) {
       String newCodon = "";
       while (index < 3) {
-        newCodon = newCodon + inSequence.charAt(index);
-        index++;
+        if(inSequence.charAt(index) == ' '){
+          index++;
+          inSequence = inSequence.substring(index);
+        }else {
+          newCodon = newCodon + inSequence.charAt(index);
+          index++;
+        }
+
 
       }
       inSequence = inSequence.substring(index); /*inSequence updates in length where the last value of index was at.*/
       //System.out.println("Testing if new codon was made...");
       //System.out.println(newCodon);
       index = 0; // index resets
+
 
       //setting our head
       if(head == null){

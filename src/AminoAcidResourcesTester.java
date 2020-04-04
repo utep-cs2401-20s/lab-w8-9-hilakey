@@ -1,7 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 class AminoAcidResourcesTester{
 
